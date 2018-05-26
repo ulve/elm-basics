@@ -160,6 +160,7 @@ colorToCssString color =
 
 type alias Example =
     { name : String
+    , description: String
     , testCases : List ( String, Bool, String, String )
     }
 
@@ -170,7 +171,7 @@ isFinished example =
 
 
 viewExample : Example -> Html Never
-viewExample { name, testCases } =
+viewExample { name, description, testCases } =
     let
         showTestCase ( code, isCorrect, actual, expected ) =
             Html.div []
@@ -188,9 +189,11 @@ viewExample { name, testCases } =
                          else
                             []
                         )
+        showDescription desc = [Html.div [] [Html.text desc]]
     in
         Html.div [Html.Attributes.class "exercise"]
             [ goalHeading name
+            , Html.div [] (showDescription description)
             , Html.div [] (showTestCases [] testCases)
             ]
 
@@ -200,13 +203,14 @@ goalHeading name =
     Html.h3 []
         [ Html.text "Mål: implementera "
         , inlineCode name
-        , Html.text " funktionen så att följande test fungerar:"
+        , Html.text " funktionen så att testen fungerar."
         ]
 
 
-functionExampleN : (a -> String) -> String -> (a -> value) -> List ( a, value ) -> Example
-functionExampleN argsToString name function testCases =
+functionExampleN : (a -> String) -> String -> String -> (a -> value) -> List ( a, value ) -> Example
+functionExampleN argsToString name description function testCases =
     { name = name
+    , description = description
     , testCases =
         List.map
             (\( arg1, expected ) ->
@@ -220,25 +224,27 @@ functionExampleN argsToString name function testCases =
     }
 
 
-functionExample1 : String -> (a -> value) -> List ( a, value ) -> Example
+functionExample1 : String -> String -> (a -> value) -> List ( a, value ) -> Example
 functionExample1 =
     functionExampleN toString
 
 
-functionExample2 : String -> (a -> b -> value) -> List ( ( a, b ), value ) -> Example
-functionExample2 name function testCases =
+functionExample2 : String -> String -> (a -> b -> value) -> List ( ( a, b ), value ) -> Example
+functionExample2 name description function testCases =
     functionExampleN
         (\( a, b ) -> toString a ++ " " ++ toString b)
         name
+        description
         (\( a, b ) -> function a b)
         testCases
 
 
-functionExample3 : String -> (a -> b -> c -> value) -> List ( ( a, b, c ), value ) -> Example
-functionExample3 name function testCases =
+functionExample3 : String -> String -> (a -> b -> c -> value) -> List ( ( a, b, c ), value ) -> Example
+functionExample3 name description function testCases =
     functionExampleN
         (\( a, b, c ) -> toString a ++ " " ++ toString b ++ " " ++ toString c)
         name
+        description
         (\( a, b, c ) -> function a b c)
         testCases
 

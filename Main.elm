@@ -19,7 +19,7 @@ sayHello friendsName =
 formatPhoneNumber : String -> String -> String -> String
 formatPhoneNumber country area local =
     -- TIPS: kolla på http://package.elm-lang.org/packages/elm-lang/core/latest/String för några trick
-    -- desired format: +46 920-41152
+    -- det format vi vill ha: +46 920-41152
     "TODO: implementera mig"
 
 
@@ -138,16 +138,19 @@ examples : List ( String, List Example )
 examples =
     [ ( "Strings"
       , [ functionExample1 "sayHello"
+            "Den här funktionen skall ta ett namn in och svara med en hälsning till det namnet."
             sayHello
             [ ( "Olov", "Hello, Olov" )
             , ( "Torkel", "Hello, Torkel" )
             ]
         , functionExample3 "formatPhoneNumber"
+            "Tar in en landskod. Lägger till plus på den. Tar bort nollan om det finns någon från riktnumret och lägger ett bindestreck mellan riktnummer och telefonnummer."
             formatPhoneNumber
             [ ( ( "46", "0920", "41152" ), "+46 920-41152" )
             , ( ( "46", "070", "2252822" ), "+46 70-2252822" )
             ]
         , functionExample2 "initials"
+            "Du får ett för och ett efternamn och tar fram initialerna"
             initials
             [ ( ( "Olov", "Johansson" ), "OJ" )
             , ( ( "Torkel", "Svensson" ), "TS" )
@@ -155,14 +158,16 @@ examples =
             ]
         ]
       )
-    , ( "If Statements"
+    , ( "If-statements"
       , [ functionExample1 "isGreaterThanTen"
+            "Du får ett heltal och du svarar om det är större än tio."
             isGreaterThanTen
             [ ( 13, True )
             , ( 3, False )
             , ( 10, False )
             ]
         , functionExample1 "howHotIsThePepper"
+            "Styrka är ett heltal. under 10 är not hot under 500 är mild under 5000 är medium över 30000 är hot."
             howHotIsThePepper
             [ ( 2, "not hot" )
             , ( 100, "mild" )
@@ -173,16 +178,19 @@ examples =
       )
     , ( "Lists"
       , [ functionExample1 "reverseTheList"
+            "Du får en lista som du skall vända på."
             reverseTheList
             [ ( [ 7, 0, 1, 4, 9 ], [ 9, 4, 1, 0, 7 ] )
             , ( [ 99, -1 ], [ -1, 99 ] )
             ]
         , functionExample1 "addOne"
+            "Du får en lista som du skall returnera en lista som ser likadan ut men som är ett större på varje post."
             addOne
             [ ( [ 7, 0, 1, 4, 9 ], [ 8, 1, 2, 5, 10 ] )
             , ( [ 99, -1 ], [ 100, 0 ] )
             ]
         , functionExample1 "removeOs"
+            "Du får en lista med strängar. Äckliga ord som börjar på O skall bort."
             removeOs
             [ ( [ "Jessie", "Anibus", "Osirus" ], [ "Jessie", "Anibus" ] )
             , ( [ "Apple", "Banana" ], [ "Apple", "Banana" ] )
@@ -192,27 +200,32 @@ examples =
       )
     , ( "Records"
       , [ functionExample1 "newborn"
+            "Gör en funktion som tar namnet på en person och returnerar en record som uppfyller stämmer."
             newborn
             [ ( "Jenny", { name = "Jenny", age = 0 } )
             , ( "Abey", { name = "Abey", age = 0 } )
             ]
         , functionExample2 "ageDifference"
+            "Du får två personer och räknar ut skillnaden i ålder mellan personerna."
             ageDifference
             [ ( ( { name = "Nicole", age = 40 }, { name = "Angel", age = 30 } ), 10 )
             , ( ( { name = "Igor", age = 18 }, { name = "Alexei", age = 23 } ), 5 )
             ]
         , functionExample2 "nameChange"
+            "Skickar in ett namn och en person. Får tillbaks en ny record där namnet är bytt."
             nameChange
             [ ( ( "Mr. T", { name = "Laurence", age = 34 } ), { name = "Mr. T", age = 34 } )
             , ( ( "Demi", { name = "Demetria", age = 17 } ), { name = "Demi", age = 17 } )
             , ( ( "Ƭ̵̬̊", { name = "Prince", age = 35 } ), { name = "Ƭ̵̬̊", age = 35 } )
             ]
         , functionExample1 "getOlder"
+            "Du får två personer och returnerar den äldre av dessa"
             getOlder
             [ ( { name = "Jenny", age = 0 }, { name = "Jenny", age = 1 } )
             , ( { name = "Igor", age = 18 }, { name = "Igor", age = 19 } )
             ]
         , functionExample1 "combinedYears"
+            "Du får en lista med personer och lägger samman personernas ålder."
             combinedYears
             [ ( [ { name = "Ruth Bader Ginsburg", age = 83 }
                 , { name = "Gloria Allred", age = 75 }
@@ -240,6 +253,7 @@ bonusExamples : List ( String, List Example )
 bonusExamples =
     [ ( "Tuples"
       , [ functionExample1 "signAndMagnitude"
+            "Du får ett heltal och retunerar en tupel med tecken och storlek."
             signAndMagnitude
             [ ( -7, ( "-", 7 ) )
             , ( 3, ( "+", 3 ) )
