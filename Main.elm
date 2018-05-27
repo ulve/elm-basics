@@ -19,15 +19,14 @@ sayHello friendsName =
 formatPhoneNumber : String -> String -> String -> String
 formatPhoneNumber country area local =
     -- TIPS: kolla på http://package.elm-lang.org/packages/elm-lang/core/latest/String för några trick
-    -- det format vi vill ha: +46 920-41152
+    -- det format vi vill ha: +46 (0)920-41152
     "TODO: implementera mig"
 
-
-initials : String -> String -> String
-initials firstName lastName =
+contains : String -> Bool
+contains str =
     -- TIPS: kolla på http://package.elm-lang.org/packages/elm-lang/core/latest/String för några trick
-    "TODO: implementera mig"
-
+    -- TODO: implementera mig
+    False
 
 
 --
@@ -144,17 +143,17 @@ examples =
             , ( "Torkel", "Hello, Torkel" )
             ]
         , functionExample3 "formatPhoneNumber"
-            "Tar in en landskod. Lägger till plus på den. Tar bort nollan om det finns någon från riktnumret och lägger ett bindestreck mellan riktnummer och telefonnummer."
+            "Tar in en landskod. Lägger till plus på den. Stoppar nollan mellan parenteser (ni kan nog anta att den alltid kommer med) och lägger ett bindestreck mellan riktnummer och telefonnummer."
             formatPhoneNumber
-            [ ( ( "46", "0920", "41152" ), "+46 920-41152" )
-            , ( ( "46", "070", "2252822" ), "+46 70-2252822" )
+            [ ( ( "46", "0920", "41152" ), "+46 (0)920-41152" )
+            , ( ( "46", "070", "2252822" ), "+46 (0)70-2252822" )
             ]
-        , functionExample2 "initials"
-            "Du får ett för och ett efternamn och tar fram initialerna"
-            initials
-            [ ( ( "Olov", "Johansson" ), "OJ" )
-            , ( ( "Torkel", "Svensson" ), "TS" )
-            , ( ( "Per", "Bluffmakare" ), "PB" )
+        , functionExample1 "contains"
+            "Du får en sträng och innehåller den substrängen \"ål\" oavsett stora och små bokstäver så vill ha True"
+            contains
+            [ ( "Pålmaskin", True )
+            , ( "Fiskrens", False )
+            , ( "Åltrålare", True )
             ]
         ]
       )
