@@ -26,7 +26,7 @@ Det finns förståss nackdelar med elm också. Det är inte lika "kraftfullt" so
 
 REPL står för Read Eval Print Loop. Det är en grej som man kör i terminalen för att köra elm-kod. Man skriver komamndon och dom exikveras direkt. Det här är perfekt för att experimentera med saker. Det här är något som är gemensamt för dom allra flesta funktionella språk jag testat. Man sitter och labbar i språkets REPL för att testa fram en funktion. Det fungerar bäst i funktionella språk eftersom en funktion inte kan ha några beroenden utanför funktionen så det blir aldrig några problem med beroende till annat. Det är så klart olika mellan olika språk. Lisp är t.ex. ett språk där det allra mesta sker i REPL och i Scala är det inte alls lika viktigt. I Elm landar vi ngåonstans i mitten. Ett bra verktyg i vart fall.
 
-Man startar REPL genom att skriva `elm-repl` Här kan du nu skriva nprmal elm-kod och se vad som händer. 
+Man startar REPL genom att skriva `elm-repl` Här kan du nu skriva normal elm-kod och se vad som händer. 
 
 Testa skriva lite olika uttryck:
 ``` elm
@@ -96,7 +96,7 @@ fine, I assume it is correct and check the right side. So the problem may be in
 how the left and right arguments interact.
 ```
 
-man kan testa lite olika sådana där för att se vad som händer. Rent generellt skall det gå bra att läsa och tyda det där om man inte stöter på suerkonstiga typer eller så.
+man kan testa lite olika sådana där för att se vad som händer. Rent generellt skall det gå bra att läsa och tyda det där om man inte stöter på superkonstiga typer eller så.
 
 ### Anropa funktioner
 
@@ -322,3 +322,77 @@ enFunktion =
     in
         variabel ++ (toString enAnnanVariabel)
 ```
+
+## Partiell applikation
+
+den här syntaxen som vi använt för att beskriva funktioners variabler
+`Int -> Int -> Int` så säger vi egentligen att vi har en funktion som tar en int och svarar med en funktion som tar en int som i sin tur svarar med en int. Alla funktioner i språket är curried som det kallas. 
+
+```elm
+add : Int -> Int -> Int 
+add x y = x + y
+```
+Anger man bara en parameter så får man en ny funktion som svar.
+
+I JavaScript är det tydligare för där är inget curried från start så man ser ofta
+
+```js
+const add = x => y => x + y
+const addOne = add(1)
+// function
+addOne(2)
+// 3
+
+// Eller om man skall köra direkt
+add(1)(2)
+// 3
+```
+
+det blir betydligt smidigare i språk som har bra stöd för det här
+
+```elm
+add x y = x + y
+addOne = add 1
+addOne 2
+-- 3
+-- eller o man skall köra direkt
+add 1 2 
+-- 3
+```
+
+När man bara anger några av parametrarna så kallas det för partiell applikation. Där av namnet. Värt att tänka på att i dom flesta språk så kan man inte välja vilken ordning parametrarna appliceras. Man tar från väster först.
+
+## Komposition
+
+Värt att tänka på att när man pratar om funktionell programmering så är funktionerna i fokus. Efter ett tag så går det mesta ut på att sätta ihop olika funktioner. I Elm finns det två hvudsätt att göra det på. Det första sättet är så kallad piping. Det gör man med operatorn
+`|>` 
+Det tar alltså data från vänster sida och stoppar in det i funktionen på höger sida
+
+```elm
+double x = x * 2
+plusOne x = x + 1
+2 |> plusOne |> double
+6 : number
+```
+
+Det finns även en variant av den här som går åt andra hållet. `<|` vilken man använder beror på vilket håll man vill att datat skall flöda.
+
+Det är när man börjar använda den här typen av funktioner man ser storheten med partiell applikation
+
+```elm
+add x y =  x + y
+multiply x y = x * y
+1 |> add 2 |> multiply 2
+-- 6
+```
+
+I det där exemplet kan man alltså skippa alla mellansteg och göra en `addOne` funktion eller så. 
+
+Det andra sättet man kan sätta ihop funktioner är med operatorn `>>` den fungerar som klister mellan två funktioner och ger en ny funktion som svar
+
+`addThenDouble = addOne >> double`
+
+Det är i stort sett samma sak du får en funktion som har inparametrar som den första och utparametrar som den sista som svar. Det kräver att utparametern från addOne passar in som inparameter på double. Som ni ser så nämner vi aldrig parametern. Det kan vara ytters förvrrande när man aldrig sett det förr. Det kallas för Point Free Notation.
+
+`addThenDouble num = (addOne num) >> (double)` skulle man kunna skriva.
+
